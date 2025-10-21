@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  # RabbitMQ with MQTT plugin
+  rabbitmq:
+    image: rabbitmq:3.12-management
+    container_name: mass-rabbitmq
+    ports:
+      - "1883:1883"   # MQTT
+      - "15672:15672" # Management UI
+      - "5672:5672"   # AMQP
+    environment:
+      RABBITMQ_ENABLED_PLUGINS_FILE: /etc/rabbitmq/enabled_plugins
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+      - ./rabbitmq_enabled_plugins:/etc/rabbitmq/enabled_plugins
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # MASS Simulator (Haberleşme Ünitesi)
+  mass-simulator:
+    build: .
+    container_name: mass-simulator
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    ports:
+      - "8000:8000"  # HTTP API
+    environment:
+      - MQTT_BROKER=rabbitmq
+      - MQTT_PORT=1883
+      - MQTT_USERNAME=guest
+      - MQTT_PASSWORD=guest
+      - DEVICE_SERIAL=SIM001ABCDE12345
+      - HEARTBEAT_INTERVAL=60
+      - DEVICE_FLAG=SIM
+    restart: unless-stopped
+
+volumes:
+  rabbitmq_data:
