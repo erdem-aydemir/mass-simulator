@@ -1,0 +1,330 @@
+{
+	"info": {
+		"_postman_id": "06bb379a-597f-4fc3-ab5d-c77a561e4635",
+		"name": "MASS Simulator API V2",
+		"description": "Complete MASS Protocol Simulator API Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "2849786"
+	},
+	"item": [
+		{
+			"name": "Health & Status",
+			"item": [
+				{
+					"name": "Health Check",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/health",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"health"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Device State",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/device/state",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"device",
+								"state"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Device Configuration",
+			"item": [
+				{
+					"name": "Update Config (Signal & Temp)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/device/config?signal=20&cpu_temp=25",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"device",
+								"config"
+							],
+							"query": [
+								{
+									"key": "signal",
+									"value": "20"
+								},
+								{
+									"key": "cpu_temp",
+									"value": "25"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Meter",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"protocol\": \"IEC62056\",\n  \"type\": \"electricity\",\n  \"brand\": \"EMH\",\n  \"serialNumber\": \"12345678\",\n  \"serialPort\": \"rs485-1\",\n  \"initBaud\": 300,\n  \"fixBaud\": false,\n  \"frame\": \"7E1\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/device/meter/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"device",
+								"meter",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Manual Triggers",
+			"item": [
+				{
+					"name": "Trigger Heartbeat",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/trigger/heartbeat",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"trigger",
+								"heartbeat"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trigger Alarm - Info",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"alarm_type\": \"info\",\n  \"level\": \"info\",\n  \"incident_code\": 101,\n  \"description\": \"Test info message\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/trigger/alarm",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"trigger",
+								"alarm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trigger Alarm - Warning",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"alarm_type\": \"alarm\",\n  \"level\": \"warning\",\n  \"incident_code\": 310,\n  \"description\": \"Röle söküldü\",\n  \"meter_serial\": \"12345678\",\n  \"meter_brand\": \"EMH\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/trigger/alarm",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"trigger",
+								"alarm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trigger Alarm - Critical",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"alarm_type\": \"danger\",\n  \"level\": \"critical\",\n  \"incident_code\": 700,\n  \"description\": \"Açılışta ölçüm cihazı okunamadı\"\n}"
+						},
+						"url": {
+							"raw": "{{baseUrl}}/trigger/alarm",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"trigger",
+								"alarm"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trigger Write",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/trigger/write?meter_serial=12345678&obis_code=1.8.0&value=1234.56",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"trigger",
+								"write"
+							],
+							"query": [
+								{
+									"key": "meter_serial",
+									"value": "12345678"
+								},
+								{
+									"key": "obis_code",
+									"value": "1.8.0"
+								},
+								{
+									"key": "value",
+									"value": "1234.56"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trigger Reset",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/trigger/reset?factory_default=false",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"trigger",
+								"reset"
+							],
+							"query": [
+								{
+									"key": "factory_default",
+									"value": "false"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Trigger Relay Control",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/trigger/relay?relay_name=relay-1&state=on",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"trigger",
+								"relay"
+							],
+							"query": [
+								{
+									"key": "relay_name",
+									"value": "relay-1"
+								},
+								{
+									"key": "state",
+									"value": "on"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8000"
+		}
+	]
+}
