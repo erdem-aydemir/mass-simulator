@@ -6,7 +6,7 @@ services:
     ports:
       - "8000:8000"  # HTTP API
     environment:
-      - MQTT_BROKER=192.168.1.20
+      - MQTT_BROKER=192.168.1.27
       - MQTT_PORT=1883
       - MQTT_USERNAME=guest
       - MQTT_PASSWORD=guest
